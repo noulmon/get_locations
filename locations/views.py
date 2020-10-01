@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from locations.models import District, State
+from locations.models import Location
 from locations.serializers import LocationSerializer
 
 
@@ -14,9 +14,10 @@ class LocationsListView(APIView):
     def get(self, request):
         try:
             # All states are queried by pre-fetching(joining) the districts in it
-            queryset = State.objects.prefetch_related('districts').all()
+            queryset = list(dict.fromkeys(Location.objects.values_list('state', flat=True)))
             # The queryset is then serialized to the required format
             serializer = LocationSerializer(queryset, many=True)
+
             return Response(
                 {
                     'success': True,

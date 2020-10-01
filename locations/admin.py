@@ -1,5 +1,4 @@
 from django.contrib import admin
-from locations.models import State, District
+from locations.models import Location
 
-admin.site.register(State)
-admin.site.register(District)
+admin.site.register(Location)
